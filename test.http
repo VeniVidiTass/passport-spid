@@ -1,0 +1,18 @@
+### 1. Recupera i metadata del Service Provider
+GET http://localhost:4000/metadata
+Accept: text/xml
+
+### 2. Avvia il login SPID (redirect verso IdP)
+GET http://localhost:4000/login
+# Segui automaticamente il redirect per vederne l’URL
+Follow-Redirects: true
+
+### 3. Simula il callback di login inviando SAMLResponse
+# Sostituisci {{SAML_RESPONSE}} e {{RELAY_STATE}} con valori validi
+POST http://localhost:4000/login/cb
+Content-Type: application/x-www-form-urlencoded
+
+
+### 4. (Opzionale) Richiedi di nuovo i metadata per verificare che tutto funzioni
+GET http://localhost:4000/metadata
+Accept: text/xml
