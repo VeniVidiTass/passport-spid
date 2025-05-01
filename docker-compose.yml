@@ -17,15 +17,12 @@ services:
     image: "italia/spid-saml-check:1.10.4"
     ports:
       - "8443:8443"
+    networks:
+      spid_test_net:
+        ipv4_address: 172.20.0.2
   web:
     build: .
-    command: "npm run dev" 
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4000"]
-      interval: 10s
-      timeout: 5s
-      retries: 2
-      start_period: 3s
+    command: "npm run dev"
     depends_on:
       spid:
         condition: service_started
@@ -47,5 +44,16 @@ services:
     ports:
       - 4000:4000
       - 9229:9229
+    networks:
+      spid_test_net:
+        ipv4_address: 172.20.0.3
+
 volumes:
   config:
+
+networks:
+  spid_test_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
